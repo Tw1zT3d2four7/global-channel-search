@@ -131,6 +131,9 @@ brew install jq curl
 ### Make sure that when your ready to exit the terminal/console that you select "Q" to quit prior to closing the terminal/console window.
 ### So that it restarts when you want to use the container again.
 
+
+
+
 Select **"Search Local Database"** - works immediately with thousands of pre-loaded stations!
 
 ### Option 2: Command Line Help
