@@ -1,5 +1,5 @@
 # -------- Stage 1: Build viu from source --------
-FROM rust:1.79-slim as builder
+FROM rust:1.79-slim AS builder
 
 # Install required dependencies
 RUN apt-get update && \
