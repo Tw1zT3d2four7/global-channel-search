@@ -1,8 +1,10 @@
 services:
   global-channel-search:
-    build: .
+    image: ghcr.io/tw1zt3d2four7/global-channel-search:latest
     container_name: global-channel-search
-    image: global-channel-search:latest
-    command: python main.py
-    tty: true
-
+    restart: unless-stopped
+    ports:
+      - "8000:8000"   # Change ports if your app listens on something else
+    environment:
+      # Add environment variables here if your app needs any
+      # EXAMPLE_VAR: "value"
