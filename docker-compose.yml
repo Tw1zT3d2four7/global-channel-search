@@ -1,0 +1,8 @@
+services:
+  global-channel-search:
+    build: .
+    container_name: global-channel-search
+    image: global-channel-search:latest
+    command: python main.py
+    tty: true
+
