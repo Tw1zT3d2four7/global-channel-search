@@ -1,36 +1,43 @@
-name: Build and Push Docker Image
+# -------- Stage 1: Build viu from source --------
+FROM rust:1.76-slim as builder
 
-on:
-  push:
-    branches: [ main ]
+# Install required dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        pkg-config \
+        libssl-dev \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
+# Install viu
+RUN cargo install viu
 
-    permissions:
-      contents: read
-      packages: write
+# -------- Stage 2: Final image --------
+FROM debian:bullseye-slim
 
-    steps:
-      - name: 🛎️ Checkout repository
-        uses: actions/checkout@v3
+# Install required runtime packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        bash \
+        curl \
+        jq && \
+    rm -rf /var/lib/apt/lists/*
 
-      - name: 🔐 Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+# Copy viu from builder
+COPY --from=builder /root/.cargo/bin/viu /usr/local/bin/viu
 
-      - name: 🔧 Set lowercase owner
-        id: vars
-        run: echo "LOWERCASE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+# Set terminal type
+ENV TERM=xterm
 
-      - name: 🏗️ Build and tag Docker image
-        run: |
-          docker build -t ghcr.io/${{ env.LOWERCASE_OWNER }}/global-channel-search:latest .
+# Set working directory
+WORKDIR /app
 
-      - name: 🚀 Push Docker image to GHCR
-        run: |
-          docker push ghcr.io/${{ env.LOWERCASE_OWNER }}/global-channel-search:latest
+# Copy project files
+COPY . .
+
+# Make script executable
+RUN chmod +x globalstationsearch.sh
+
+# Set default command
+CMD ["./globalstationsearch.sh"]
