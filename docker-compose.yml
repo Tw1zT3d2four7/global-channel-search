@@ -8,6 +8,6 @@ services:
     volumes:
       - ./global-channel-search/data:/data
       - ./global-channel-search/cache:/cache
-    #environment:
-      # Add environment variables here if your app needs any
-      # EXAMPLE_VAR: "value"
+    environment:
+      - TERM=xterm
+      
