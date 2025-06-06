@@ -5,8 +5,6 @@ services:
     stdin_open: true
     tty: true
     restart: "no"  # <-- This stops infinite restarts
-    ports:
-      - "8000:8000"   # Change this if the app uses another port
     volumes:
       - ./global-channel-search/data:/data
       - ./global-channel-search/cache:/cache
