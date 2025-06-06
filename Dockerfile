@@ -10,8 +10,10 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY globalstationsearch.sh .
+# Copy the entire repo content (including lib/)
+COPY . .
 
+# Make the script executable
 RUN chmod +x globalstationsearch.sh
 
 CMD ["./globalstationsearch.sh"]
