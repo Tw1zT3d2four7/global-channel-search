@@ -131,7 +131,7 @@ brew install jq curl
 ./run-global-channel-search.sh
 ```
 ### Make sure that when your ready to exit the terminal/console that you select "Q" to quit prior to closing the terminal/console window.
-### So that it restarts when you want to use the container again.
+### So that it restarts when you want to use the container again and stays presist over re-starts.
 
 
 
