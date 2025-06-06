@@ -9,6 +9,11 @@ data/
 # Development Tools
 tools
 
+# But do NOT ignore:
+!lib/
+!globalstationsearch.sh
+!Dockerfile
+
 # Previous versions
 previous_versions/
 
