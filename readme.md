@@ -99,7 +99,7 @@ A comprehensive television station search tool that (optionally) integrates with
 
 1. **Download the script:**
 ```bash
-git clone https://github.com/egyptiangio/global-channel-search
+git clone https://github.com/Tw1zT3d2four7/global-channel-search.git
 cd global-channel-search
 ```
 
