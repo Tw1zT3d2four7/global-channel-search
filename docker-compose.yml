@@ -5,6 +5,9 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"   # Change ports if your app listens on something else
-    environment:
+    volumes:
+      - ./global-channel-search/data:/data
+      - ./global-channel-search/cache:/cache
+    #environment:
       # Add environment variables here if your app needs any
       # EXAMPLE_VAR: "value"
