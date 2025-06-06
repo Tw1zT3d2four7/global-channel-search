@@ -126,8 +126,9 @@ brew install jq curl
 ```bash
 ./globalstationsearch.sh
 ```
-### Option 2: For starting the Docker Version.
-``` docker compose run --rm global-channel-search ```
+### Option 2: For installing starting the Docker Version.
+``` ./run-global-channel-search.sh ```
+### Make sure that when your ready to exit the terminal/console you select "Q" to quit prior to closing the terminal/console window.
 
 Select **"Search Local Database"** - works immediately with thousands of pre-loaded stations!
 
