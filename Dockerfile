@@ -1,5 +1,5 @@
 # -------- Stage 1: Build viu from source --------
-FROM rust:slim as builder
+FROM rust:1.79-slim as builder
 
 # Install required dependencies
 RUN apt-get update && \
@@ -10,8 +10,14 @@ RUN apt-get update && \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-# Install viu
-RUN cargo install viu
+# Ensure cargo's bin directory is in PATH (belt and suspenders)
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Install viu (pin to a known good version for safety)
+RUN cargo install viu --version 1.4.0
+
+# Verify viu was installed
+RUN ls -lh /root/.cargo/bin/viu
 
 # -------- Stage 2: Final image --------
 FROM debian:bullseye-slim
