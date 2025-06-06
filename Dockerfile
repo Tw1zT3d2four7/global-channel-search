@@ -7,6 +7,8 @@ RUN apt-get update && \
         curl \
         jq && \
     rm -rf /var/lib/apt/lists/*
+    
+ENV TERM=xterm
 
 WORKDIR /app
 
