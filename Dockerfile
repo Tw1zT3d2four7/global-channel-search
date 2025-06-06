@@ -1,21 +1,21 @@
-# Use a lightweight official Python image
-FROM python:3.10-slim
+FROM debian:bullseye-slim
 
-# Set the working directory
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        bash \
+        curl \
+        jq && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set working directory
 WORKDIR /app
 
-# Install required system packages (for building some Python wheels)
-RUN apt-get update && apt-get install -y \
-    gcc \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Copy script into the container
+COPY globalstationsearch.sh .
 
-# Copy all project files into the container
-COPY . .
+# Make the script executable
+RUN chmod +x globalstationsearch.sh
 
-# Install Python dependencies
-#RUN pip install --no-cache-dir -r requirements.txt
-
-# Run the script
-CMD ["python", "main.py"]
-
+# Set the default command to execute the script
+CMD ["./globalstationsearch.sh"]
