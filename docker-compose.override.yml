@@ -1,0 +1,6 @@
+services:
+  global-channel-search:
+    stdin_open: true
+    tty: true
+    restart: "no"  # Don't restart when container exits
+
