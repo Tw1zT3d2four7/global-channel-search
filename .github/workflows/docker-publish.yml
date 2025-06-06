@@ -10,7 +10,7 @@ jobs:
 
     permissions:
       contents: read
-      packages: write  # Required to publish to GHCR
+      packages: write
 
     steps:
       - name: Checkout repository
@@ -23,11 +23,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Docker image with :latest tag
+      - name: Set lowercase owner
+        id: vars
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/global-channel-search:latest .
+          echo "LOWERCASE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
-      - name: Push image to GHCR
+      - name: Build Docker image
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/global-channel-search:latest
+          docker build -t ghcr.io/${{ env.LOWERCASE_OWNER }}/global-channel-search:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/${{ env.LOWERCASE_OWNER }}/global-channel-search:latest
 
