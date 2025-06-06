@@ -1,35 +1,36 @@
-FROM debian:bullseye-slim
+name: Build and Push Docker Image
 
-# Install required packages plus dependencies for Rust build and viu
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        bash \
-        curl \
-        jq \
-        build-essential \
-        ca-certificates \
-        git \
-        libssl-dev \
-        pkg-config && \
-    rm -rf /var/lib/apt/lists/*
+on:
+  push:
+    branches: [ main ]
 
-# Install Rust (non-interactive)
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
 
-# Add cargo to PATH
-ENV PATH="/root/.cargo/bin:${PATH}"
+    permissions:
+      contents: read
+      packages: write
 
-# Install viu using cargo
-RUN cargo install viu
+    steps:
+      - name: 🛎️ Checkout repository
+        uses: actions/checkout@v3
 
-ENV TERM=xterm
+      - name: 🔐 Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-WORKDIR /app
+      - name: 🔧 Set lowercase owner
+        id: vars
+        run: echo "LOWERCASE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
 
-# Copy the entire repo content (including lib/)
-COPY . .
+      - name: 🏗️ Build and tag Docker image
+        run: |
+          docker build -t ghcr.io/${{ env.LOWERCASE_OWNER }}/global-channel-search:latest .
 
-# Make the script executable
-RUN chmod +x globalstationsearch.sh
-
-CMD ["./globalstationsearch.sh"]
+      - name: 🚀 Push Docker image to GHCR
+        run: |
+          docker push ghcr.io/${{ env.LOWERCASE_OWNER }}/global-channel-search:latest
