@@ -10,14 +10,15 @@ RUN apt-get update && \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-# Ensure cargo's bin directory is in PATH (belt and suspenders)
-ENV PATH="/root/.cargo/bin:${PATH}"
+# Set cargo bin path
+ENV CARGO_BIN_DIR=/usr/local/cargo/bin
+ENV PATH="${CARGO_BIN_DIR}:${PATH}"
 
-# Install viu (pin to a known good version for safety)
+# Install viu
 RUN cargo install viu --version 1.4.0
 
-# Verify viu was installed
-RUN ls -lh /root/.cargo/bin/viu
+# Debug: check where viu was installed
+RUN find / -type f -name viu
 
 # -------- Stage 2: Final image --------
 FROM debian:bullseye-slim
@@ -30,8 +31,8 @@ RUN apt-get update && \
         jq && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy viu from builder
-COPY --from=builder /root/.cargo/bin/viu /usr/local/bin/viu
+# Copy viu from builder (based on actual cargo path)
+COPY --from=builder /usr/local/cargo/bin/viu /usr/local/bin/viu
 
 # Set terminal type
 ENV TERM=xterm
