@@ -138,7 +138,7 @@ brew install jq curl
 
 Select **"Search Local Database"** - works immediately with thousands of pre-loaded stations!
 
-### Option 2: Command Line Help
+### Option 3: Command Line Help
 ```bash
 ./globalstationsearch.sh --help           # Usage help
 ./globalstationsearch.sh --version        # Version number
