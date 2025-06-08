@@ -2,11 +2,16 @@ services:
   global-channel-search:
     image: ghcr.io/tw1zt3d2four7/global-channel-search:latest
     container_name: global-channel-search
+    pull_policy: always
     stdin_open: true
     tty: true
     restart: "no"  # <-- This stops infinite restarts
     volumes:
-      - ./global-channel-search/data:/data
-      - ./global-channel-search/cache:/cache
+      - ./global-channel-search/data:/app/data
+      - ./global-channel-search/cache:/app/cache
     environment:
-      - TERM=xterm
+      TERM: xterm
+      TZ: America/New_York
+      PUID: 1000
+      PGID: 1000
+      GIDLIST: 1000
