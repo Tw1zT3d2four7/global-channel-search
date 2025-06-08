@@ -46,5 +46,8 @@ COPY . .
 # Make script executable
 RUN chmod +x globalstationsearch.sh
 
+# Make script executable
+RUN chmod +x run-global-channel-search.sh
+
 # Set default command
 CMD ["./globalstationsearch.sh"]
