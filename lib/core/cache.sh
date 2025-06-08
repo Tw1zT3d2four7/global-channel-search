@@ -589,6 +589,19 @@ is_lineup_in_base_cache() {
     "$BASE_STATIONS_JSON" >/dev/null 2>&1
 }
 
+# WRAPPER FOR COMPATIBILITY REMOVE IN FUTURE VERSION)
+check_lineup_in_base_cache() {
+  local lineup_id="$1"
+  
+  if [[ -z "$lineup_id" ]]; then
+    return 1
+  fi
+  
+  # Use the existing is_lineup_in_base_cache function
+  is_lineup_in_base_cache "$lineup_id"
+}
+
+# WRAPPER FOR COMPATIBILITY REMOVE IN FUTURE VERSION)
 is_lineup_in_user_cache() {
   local lineup_id="$1"
   # Use existing function that checks user cache state

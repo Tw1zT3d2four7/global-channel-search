@@ -4,8 +4,11 @@
 # Description: Television station search tool using Channels DVR API
 # dispatcharr integration for direct field population from search results
 # Created: 2025/05/26
-VERSION="2.0.3"
+VERSION="2.0.4"
 VERSION_INFO="Last Modified: 2025/06/06
+Patch (2.0.4)
+• Bugfixes
+
 Patch (2.0.3)
 • Definitive fix of Emby integration
 
@@ -914,8 +917,10 @@ display_logo() {
       stations_file=$(get_effective_stations_file)
       if [ $? -eq 0 ]; then
         local logo_url=$(jq -r --arg id "$stid" '.[] | select(.stationId == $id) | .preferredImage.uri // empty' "$stations_file" | head -n 1)
-        if [[ -n "$logo_url" ]]; then
-          curl -sL "$logo_url" --output "$logo_file" 2>/dev/null
+        
+        # CRITICAL FIX: Check if logo_url is valid HTTP URL before curl
+        if [[ -n "$logo_url" ]] && [[ "$logo_url" =~ ^https?:// ]] && [[ ! "$logo_url" =~ ^sources/ ]]; then
+          curl -sL --connect-timeout 5 --max-time 10 "$logo_url" --output "$logo_file" 2>/dev/null
         fi
       fi
     fi
