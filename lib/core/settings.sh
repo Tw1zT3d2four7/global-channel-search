@@ -364,7 +364,7 @@ _configure_credentials_setting() {
         DISPATCHARR_USERNAME="$username"
         DISPATCHARR_PASSWORD="$password"
         
-        if refresh_dispatcharr_tokens; then
+        if dispatcharr_test_connection; then
             echo -e "${GREEN}✅ Authentication successful${RESET}"
         else
             echo -e "${RED}❌ Authentication failed - check credentials${RESET}"

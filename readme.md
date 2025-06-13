@@ -2,51 +2,12 @@
 
 A comprehensive television station search tool that (optionally) integrates with Channels DVR and Dispatcharr to provide enhanced station discovery and automated Dispatcharr field population.
 
-## Version 2.0.4
-**Patch (2.0.4)**
-- Bugfixes
-
-**Patch (2.0.3)**
-- Definitive fix for Emby integration
-
-**Patch (2.0.1)**
-- Fixed Emby API calls
-- Fixed module loading order/dependency chain 
-
-**MAJOR RELEASE (2.0.0)**
-- All data from any previous version must be deleted as it is no longer backward compatible
-- Added multi-country filtering support and lineup tracing when caching is performed
-- Emby integration to populate necessary lineupIds for all channels in m3u playlist
-- Significant enhacnements to codebase
-
-**Previous Release (1.4.5) - 2025-06-04**
-- **Enhanced Authentication** - Moved all Dispatcharr auth functions to `lib/core/auth.sh` for background token refresh without user interaction
-- **API Consolidation** - Centralized all API calls in `lib/core/api.sh`
-- **Improved Channel Selection** - Added option to select specific channels from station ID scan results
-- **Auto-Update System** - New `lib/features/update.sh` module with startup update checks and user-configurable intervals
-
-**Previous Patch (1.4.2) - 2025-06-03**
-- Removed unused channel parsing fields (language, confidence) that were breaking core functionality
-
-**MAJOR RELEASE (1.4.0) - 2025-06-02**
-- **New Modular Framework** - Complete architecture overhaul with lib/ directory structure
-- **Major Code Reduction** - Eliminated 1000+ lines of duplicate code
-- Fixed broken Channels DVR API search functionality
-- Resolved critical user cache building issues
-- More consistent UI/UX patterns across all menus
-- Advanced channel name regex parsing
-
-**Previous Release (1.3.2):**
-- Fixed broken Dispatcharr token refresh logic
-- Added resume state handling to Dispatcharr all channels workflow
-- Users can now resume from last processed channel, start fresh, or pick specific channel number
-- Resume state persists between script runs via configuration file
-
-**1.3.1:**
-- **Enhanced Dispatcharr Workflows** - Significantly improved efficiency and user experience
-- **Streamlined Channel Processing** - Removed disruptive prompts for smoother batch operations
-- **Improved Channel Name Parsing** - Enhanced regex logic with helper functions for better auto-matching
-- **Consistent Channel Sorting** - Fixed sorting across all Dispatcharr workflows (lowest to highest channel number)
+## Version 2.1.0
+**Patch (2.1.0)**
+- Improved User Caching (resume from interruption, more efficient, fewer API calls)
+- Significantly improved dispatcharr authentication and token management
+- Continue process of code cleaning and reorganization
+- New complete USA, CAN, GBR base databse
 
 ## Features
 
@@ -153,7 +114,9 @@ Select **"Search Local Database"** - works immediately with thousands of pre-loa
 This script is designed to be self-contained and user-friendly. For issues or suggestions find me on the Dispatcharr Discord.
 
 ## Version History
-
+- **2.0.4** - Fix to Emby API calls and other bugfixes
+- **2.0.0** - BREAKING RELEASE all data must be deleted, no longer backward compatible, added
+multicountry, lineup tracing. Emby integration
 - **1.4.5** - Enhanced authentication, API consolidation, improved channel selection, auto-update system
 - **1.4.2** - Channel parsing fixes and stability improvements
 - **1.4.0** - Major modular architecture overhaul, enhanced stability, improved workflows

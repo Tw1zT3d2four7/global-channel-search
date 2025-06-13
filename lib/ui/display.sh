@@ -147,7 +147,7 @@ _show_integration_status() {
     
     # Dispatcharr Integration  
     if [[ "$DISPATCHARR_ENABLED" == "true" ]]; then
-        if check_dispatcharr_connection 2>/dev/null; then
+        if dispatcharr_test_connection 2>/dev/null; then
             format_status_indicator "success" "Dispatcharr Integration: Connected" "$DISPATCHARR_URL"
         else
             format_status_indicator "error" "Dispatcharr Integration: Connection Failed" "$DISPATCHARR_URL"
@@ -177,7 +177,7 @@ _show_market_status() {
             
             if is_market_cached "$country" "$zip"; then
                 ((cached_markets++))
-            elif check_market_in_base_cache "$country" "$zip" 2>/dev/null; then
+            elif is_market_in_base_cache "$country" "$zip" 2>/dev/null; then
                 ((base_cache_markets++))
             else
                 ((pending_markets++))

@@ -176,7 +176,7 @@ _show_dispatcharr_menu_status() {
     echo -e "${BOLD}${BLUE}=== Connection Status ===${RESET}"
     
     if [[ "$DISPATCHARR_ENABLED" == "true" ]]; then
-        if check_dispatcharr_connection; then
+        if dispatcharr_test_connection; then
             format_status_indicator "success" "Dispatcharr Integration: Active and Connected"
             echo -e "   ${CYAN}🌐 Server: $DISPATCHARR_URL${RESET}"
             echo -e "   ${CYAN}👤 User: ${DISPATCHARR_USERNAME:-"Not configured"}${RESET}"
@@ -265,7 +265,7 @@ _show_markets_menu_status() {
             
             if is_market_cached "$country" "$zip"; then
                 ((cached_count++))
-            elif check_market_in_base_cache "$country" "$zip" 2>/dev/null; then
+            elif is_market_in_base_cache "$country" "$zip" 2>/dev/null; then
                 ((base_cache_count++))
             else
                 ((pending_count++))
@@ -328,7 +328,7 @@ _show_settings_menu_status() {
     # Dispatcharr integration with connection status
     if [[ "$DISPATCHARR_ENABLED" == "true" ]]; then
         if [[ -n "${DISPATCHARR_URL:-}" ]]; then
-            if check_dispatcharr_connection 2>/dev/null; then
+            if dispatcharr_test_connection 2>/dev/null; then
                 echo -e "${GREEN}✅ Dispatcharr Integration: Connected (${CYAN}$DISPATCHARR_URL${RESET})"
             else
                 echo -e "${YELLOW}⚠️  Dispatcharr Integration: Configured but connection failed${RESET}"
@@ -461,7 +461,7 @@ _show_markets_table() {
         if is_market_cached "$country" "$zip"; then
             status_text="${GREEN}Cached${RESET}"
             notes="Ready"
-        elif check_market_in_base_cache "$country" "$zip" 2>/dev/null; then
+        elif is_market_in_base_cache "$country" "$zip" 2>/dev/null; then
             status_text="${YELLOW}In base${RESET}"
             notes="May skip"
         else
@@ -488,7 +488,7 @@ show_main_menu() {
   local main_options=(
     "1|Search Local Database"
     "2|Dispatcharr Integration" 
-    "3|Emby Intergation"
+    "3|Emby Integration"
     "4|Manage Television Markets for User Cache"
     "5|Run User Caching"
     "6|Direct API Search"
@@ -500,8 +500,8 @@ show_main_menu() {
   
   show_menu "Global Station Search v$VERSION|system|main_options"
 
-  local total_count=$(get_total_stations_count)
-  if [ "$total_count" -eq 0 ]; then
+    local total_count=$(get_total_stations_count 2>/dev/null || echo "0")
+    if [[ "${total_count:-0}" -eq 0 ]]; then
     echo
     echo -e "${BOLD}${YELLOW}💡 Quick Start Guide:${RESET}"
     echo -e "${CYAN}No station database found - here's how to get started:${RESET}"
@@ -622,7 +622,7 @@ _show_dispatcharr_recommendations() {
     if [[ "$DISPATCHARR_ENABLED" != "true" ]]; then
         echo -e "${BOLD}${YELLOW}💡 Quick Start Recommendation:${RESET}"
         echo -e "${CYAN}   Start with option 'e' to configure your Dispatcharr connection${RESET}"
-    elif ! check_dispatcharr_connection; then
+    elif ! dispatcharr_test_connection; then
         echo -e "${BOLD}${YELLOW}💡 Connection Issue Detected:${RESET}"
         echo -e "${CYAN}   Try option 'e' to reconfigure connection or 'g' to refresh tokens${RESET}"
     elif [ "$total_count" -eq 0 ]; then
