@@ -1,7 +1,6 @@
 services:
   global-channel-search:
     image: ghcr.io/tw1zt3d2four7/global-channel-search:latest
-    #image: ghcr.io/tw1zt3d2four7/global-channel-search:latest
     container_name: global-channel-search
     stdin_open: true
     tty: true
