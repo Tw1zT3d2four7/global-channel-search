@@ -1,0 +1,4 @@
+echo "Auto build trigger" > trigger.txt
+git add trigger.txt
+git commit -m "Add trigger.txt"
+git push
